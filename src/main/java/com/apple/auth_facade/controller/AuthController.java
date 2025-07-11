@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.apple.auth_facade.dto.ExternalResponse;
 
 import reactor.core.publisher.Mono;
 
