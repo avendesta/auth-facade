@@ -14,10 +14,14 @@ import com.apple.auth_facade.dto.AuthorizationRequest;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @RestController
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final WebClient webClient;
 
@@ -42,9 +46,9 @@ public Mono<Map<String, Boolean>> checkExternalEndpoint(@Valid @RequestBody Auth
         .map(auth -> Map.of("auth", auth))
         .onErrorResume(error -> {
             if (error instanceof java.util.concurrent.TimeoutException) {
-                System.err.println("Timeout occurred while calling external endpoint.");
+                logger.error("Timeout occurred while calling external endpoint.");
             } else {
-                System.err.println("Error occurred while calling external endpoint: " + error.getMessage());
+                logger.error("Error occurred while calling external endpoint: {}", error.getMessage(), error);
             }
             // Return a fallback response
             return Mono.just(Map.of("auth", false));
